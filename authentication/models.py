@@ -10,7 +10,7 @@ class User(AbstractUser):
     
     class Team(TextChoices):
         MANAGEMENT = 'Management'
-        VENDOR = 'Vendor'
+        SALES = 'Sales'
         SUPPORT = 'Support'
     
     team = CharField(choices=Team.choices, blank=False, null=False, max_length=16)
