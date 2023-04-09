@@ -78,8 +78,12 @@ WSGI_APPLICATION = 'epic_events.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'epic_events',
+        'USER': 'epicadmin',
+        'PASSWORD': 'D!j4c39H',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 

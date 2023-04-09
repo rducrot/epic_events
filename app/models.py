@@ -26,6 +26,9 @@ class Client(TimeStampModel):
 
     sales_contact = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL)
 
+    def __str__(self):
+        return f'{self.first_name} { self.last_name} - {self.company_name}'
+
 
 class Contract(TimeStampModel):
     """
@@ -37,6 +40,9 @@ class Contract(TimeStampModel):
 
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     sales_contact = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return f'{self.client} - Contract {self.pk}'
 
 
 class Event(TimeStampModel):
@@ -56,3 +62,6 @@ class Event(TimeStampModel):
 
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     support_contact = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return f'{self.client} - Event {self.pk}'
