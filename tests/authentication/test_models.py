@@ -16,7 +16,7 @@ class TestClass:
             team=manager_fixture['team'],
         )
         assert isinstance(sut, models.User)
-        assert sut.team == 'Manager'
+        assert sut.team == models.User.Team.SALES
 
     def test_create_sales_user(self, sales_fixture):
         sut = models.User.objects.create_user(
@@ -28,7 +28,7 @@ class TestClass:
             team=sales_fixture['team'],
         )
         assert isinstance(sut, models.User)
-        assert sut.team == 'Sales'
+        assert sut.team == models.User.Team.SALES
 
     def test_create_support_user(self, support_fixture):
         sut = models.User.objects.create_user(
@@ -40,4 +40,4 @@ class TestClass:
             team=support_fixture['team'],
         )
         assert isinstance(sut, models.User)
-        assert sut.team == 'Support'
+        assert sut.team == models.User.Team.SUPPORT

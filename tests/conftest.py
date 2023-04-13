@@ -1,9 +1,11 @@
 from datetime import datetime
+
+from django.test import Client
+import pytest
 import pytz
 
-import pytest
-from django.test import Client
-
+from app import models
+from authentication.models import User
 
 @pytest.fixture
 def client():
@@ -16,6 +18,7 @@ def client_fixture():
     data = {
         'first_name': 'Toto',
         'last_name': 'DUPONT',
+        'client_status': models.Client.ClientStatus.EXISTING,
         'email': 'toto@mail.com',
         'phone': '04.10.10.20.20',
         'mobile': '06.01.02.03.04',
@@ -27,7 +30,7 @@ def client_fixture():
 @pytest.fixture
 def contract_fixture():
     data = {
-        'status': True,
+        'contract_status': models.Contract.ContractStatus.SIGNED,
         'amount': 1200.25,
         'payment_due': datetime(2023, 6, 15, 0, 0, 0, tzinfo=pytz.UTC),
     }
@@ -37,6 +40,7 @@ def contract_fixture():
 @pytest.fixture
 def event_fixture():
     data = {
+        'event_status': models.Event.EventStatus.NEW,
         'attendee': 50,
         'event_date': datetime(2023, 5, 15, 14, 0, 0, tzinfo=pytz.UTC),
         'notes': 'An event for Toto Company',
@@ -52,7 +56,7 @@ def manager_fixture():
         'last_name': 'DOE',
         'email': 'manager@mail.com',
         'password': 'Jane@1234!',
-        'team': 'Manager',
+        'team': User.Team.SALES,
     }
     return data
 
@@ -65,7 +69,7 @@ def sales_fixture():
         'last_name': 'DOE',
         'email': 'sales@mail.com',
         'password': 'mdp*Sales44!',
-        'team': 'Sales',
+        'team': User.Team.SALES,
     }
     return data
 
@@ -78,6 +82,6 @@ def support_fixture():
         'last_name': 'DUPONT',
         'email': 'support@mail.com',
         'password': 'Dup0nt123mdp!',
-        'team': 'Support',
+        'team': User.Team.SUPPORT,
     }
     return data
