@@ -32,7 +32,7 @@ class Client(TimeStampModel):
     
     client_status = models.CharField(max_length=16, choices=ClientStatus.choices, default=ClientStatus.POTENTIAL)
 
-    sales_contact = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL,
+    sales_contact = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL,
         limit_choices_to={'team':User.Team.SALES})
 
     def __str__(self):
@@ -53,7 +53,7 @@ class Contract(TimeStampModel):
     payment_due = models.DateTimeField()
 
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    sales_contact = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL,
+    sales_contact = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL,
         limit_choices_to={'team':User.Team.SALES})
 
 
@@ -77,8 +77,8 @@ class Event(TimeStampModel):
     notes = models.TextField()
 
     contract = models.OneToOneField(Contract, on_delete=models.CASCADE, limit_choices_to={'contract_status':Contract.ContractStatus.SIGNED})
-    support_contact = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL,
+    support_contact = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL,
         limit_choices_to={'team':User.Team.SUPPORT})
 
     def __str__(self):
-        return f'{self.client} - Event {self.pk}'
+        return f'{self.contract} - Event {self.pk}'
