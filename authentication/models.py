@@ -14,3 +14,17 @@ class User(AbstractUser):
         SUPPORT = 'Support'
 
     team = CharField(choices=Team.choices, blank=False, null=False, max_length=16)
+
+    REQUIRED_FIELDS = ['password', 'team']
+
+    def save(self, *args, **kwargs):
+        if self.team == self.Team.MANAGEMENT:
+            self.is_staff = True
+            self.is_superuser = True
+        else :
+            self.is_staff = False
+            self.is_superuser = False
+        
+        user = super(User, self)
+        user.save()
+        return user
