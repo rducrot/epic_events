@@ -18,6 +18,9 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ['password', 'team']
 
     def save(self, *args, **kwargs):
+        """
+        User can access admin interface only if in management team.
+        """
         if self.team == self.Team.MANAGEMENT:
             self.is_staff = True
             self.is_superuser = True

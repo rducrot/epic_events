@@ -38,6 +38,13 @@ class Client(TimeStampModel):
     def __str__(self):
         return f'{self.first_name} { self.last_name} - {self.company_name}'
 
+    def clean(self):
+        """
+        sales_contact must be in sales team.
+        """
+        if self.sales_contact.team != User.Team.SALES:
+            raise(TypeError("Sales contact not in Sales Team."))
+
 
 class Contract(TimeStampModel):
     """
@@ -59,6 +66,13 @@ class Contract(TimeStampModel):
 
     def __str__(self):
         return f'{self.client} - Contract {self.pk}'
+    
+    def clean(self):
+        """
+        sales_contact must be in sales team.
+        """
+        if self.sales_contact.team != User.Team.SALES:
+            raise(TypeError("Sales contact not in Sales Team."))
 
 
 class Event(TimeStampModel):
@@ -82,3 +96,10 @@ class Event(TimeStampModel):
 
     def __str__(self):
         return f'{self.contract} - Event {self.pk}'
+    
+    def clean(self):
+        """
+        support_contact must be in support team.
+        """
+        if self.support_contact.team != User.Team.SUPPORT:
+            raise(TypeError("Support contact not in Support Team."))
