@@ -103,3 +103,7 @@ class Event(TimeStampModel):
         """
         if self.support_contact.team != User.Team.SUPPORT:
             raise(TypeError("Support contact not in Support Team."))
+
+        if self.contract.contract_status != Contract.ContractStatus.SIGNED:
+            raise(TypeError("Contract must be signed."))
+            

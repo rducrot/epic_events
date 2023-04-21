@@ -36,6 +36,11 @@ def contract_fixture():
     }
     return data
 
+@pytest.fixture
+def contract_unsigned_fixture(contract_fixture):
+    contract_fixture['contract_status'] = models.Contract.ContractStatus.NEW
+    return contract_fixture
+
 
 @pytest.fixture
 def event_fixture():
