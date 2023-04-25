@@ -1,24 +1,30 @@
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import IsAuthenticated
 
-from app import models, serializers
+from app.models import Client, Contract, Event
+from app.serializers import ClientSerializer, ContractSerializer, EventSerializer
+from app.permissions import ClientPermission, ContractPermission, EventPermission
 
 
 class ClientViewSet(ModelViewSet):
-    serializer_class = serializers.ClientSerializer
+    serializer_class = ClientSerializer
+    permission_classes = [IsAuthenticated, ClientPermission]
 
     def get_queryset(self):
-        return models.Client.objects.all()
+        return Client.objects.all()
     
 
 class ContractViewSet(ModelViewSet):
-    serializer_class = serializers.ContractSerializer
+    serializer_class = ContractSerializer
+    permission_classes = [IsAuthenticated, ContractPermission]
 
     def get_queryset(self):
-        return models.Contract.objects.all()
+        return Contract.objects.all()
 
 
 class EventViewSet(ModelViewSet):
-    serializer_class = serializers.EventSerializer
+    serializer_class = EventSerializer
+    permission_classes = [IsAuthenticated, EventPermission]
 
     def get_queryset(self):
-        return models.Event.objects.all()
+        return Event.objects.all()

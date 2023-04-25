@@ -22,21 +22,6 @@ class TestClass:
             company_name='Toto Company',
             sales_contact=self.sales_contact,
         )
-        self.contract = models.Contract.objects.create(
-            contract_status=models.Contract.ContractStatus.SIGNED,
-            amount=50,
-            #amount=contract_fixture['amount'],
-            payment_due=datetime(2023, 5, 15, 14, 0, 0, tzinfo=pytz.UTC),
-            client=self.client,
-            sales_contact=self.sales_contact,
-        )
-        self.contract_unsigned = models.Contract.objects.create(
-            contract_status=models.Contract.ContractStatus.NEW,
-            amount=50,
-            payment_due=datetime(2023, 5, 15, 14, 0, 0, tzinfo=pytz.UTC),
-            client=self.client,
-            sales_contact=self.sales_contact,
-        )
 
     def test_create_client(self, client_fixture):
         sut = models.Client.objects.create(
@@ -74,21 +59,31 @@ class TestClass:
             sut.full_clean()
             sut.save()
 
-    def test_create_event(self, event_fixture):
+    def test_create_event(self, event_fixture, contract_fixture):
         assert not models.Event.objects.exists()
 
+        contract = models.Contract.objects.create(
+            client=self.client,
+            sales_contact=self.sales_contact,
+            **contract_fixture,
+        )
         sut = models.Event.objects.create(
-            contract=self.contract,
+            contract=contract,
             support_contact=self.support_contact,
             **event_fixture,
         )
         assert isinstance(sut, models.Event)
 
-    def test_create_event_wrong_support_contact(self, event_fixture):
+    def test_create_event_wrong_support_contact(self, event_fixture, contract_fixture):
         assert not models.Event.objects.exists()
 
+        contract = models.Contract.objects.create(
+            client=self.client,
+            sales_contact=self.sales_contact,
+            **contract_fixture,
+        )
         sut = models.Event.objects.create(
-            contract=self.contract,
+            contract=contract,
             # Register wrong user for support_contact
             support_contact=self.sales_contact,
             **event_fixture,
@@ -97,11 +92,17 @@ class TestClass:
             sut.full_clean()
             sut.save()
 
-    def test_create_event_wrong_contract(self, event_fixture):
+    def test_create_event_wrong_contract(self, event_fixture, contract_unsigned_fixture):
         assert not models.Event.objects.exists()
 
+        contract_unsigned = models.Contract.objects.create(
+            client=self.client,
+            sales_contact=self.sales_contact,
+            **contract_unsigned_fixture,
+        )
         sut = models.Event.objects.create(
-            contract=self.contract_unsigned,
+            # Register unsigned contract
+            contract=contract_unsigned,
             support_contact=self.support_contact,
             **event_fixture,
         )
