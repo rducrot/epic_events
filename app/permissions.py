@@ -5,6 +5,10 @@ from authentication.models import User
 
 
 class ClientPermission(permissions.BasePermission):
+    """
+    Management and Support Users can GET list and retrieve.
+    Sales Users have all rights.
+    """
     
     def has_permission(self, request, view):
         if request.user.team in (User.Team.SUPPORT, User.Team.MANAGEMENT):
@@ -13,11 +17,17 @@ class ClientPermission(permissions.BasePermission):
             return request.user.team == User.Team.SALES
 
     def has_object_permission(self, request, view, obj):
-        if request.user.team == User.Team.SUPPORT:
-            return obj in Client.objects.filter(contract__event__support_contract=request.user)
+        if view.action in ['list', 'retrieve']:
+            return True
+        elif view.action in ['update', 'partial_update', 'destroy']:
+            return request.user.team == User.Team.SALES
 
 
 class ContractPermission(permissions.BasePermission):
+    """
+    Management and Support Users can GET list and retrieve.
+    Sales Users have all rights.
+    """
 
     def has_permission(self, request, view):
         if request.user.team in (User.Team.SUPPORT, User.Team.MANAGEMENT):
@@ -26,10 +36,18 @@ class ContractPermission(permissions.BasePermission):
             return request.user.team == User.Team.SALES
             
     def has_object_permission(self, request, view, obj):
-        pass
+        if view.action in ['list', 'retrieve']:
+            return True
+        elif view.action in ['update', 'partial_update', 'destroy']:
+            return request.user.team == User.Team.SALES
 
 
 class EventPermission(permissions.BasePermission):
+    """
+    Management Users can GET list and retrieve.
+    Support Users can GET list and retrieve, UPDATE assigned events.
+    Sales Users have all rights.
+    """
     
     def has_permission(self, request, view):
         if request.user.team == User.Team.MANAGEMENT:
@@ -38,7 +56,11 @@ class EventPermission(permissions.BasePermission):
             return request.method in ['GET', 'PUT']
         else:
             return request.user.team == User.Team.SALES
-            
 
     def has_object_permission(self, request, view, obj):
-        pass
+        if view.action in ['list', 'retrieve']:
+            return True
+        elif view.action in ['update', 'partial_update']:
+            return request.user.team in (User.Team.SALES, User.Team.SUPPORT)
+        elif view.action is 'destroy':
+            return request.user.team == User.Team.SALES
