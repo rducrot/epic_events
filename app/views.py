@@ -1,6 +1,7 @@
 from django.db.models import Q
-from rest_framework.viewsets import ModelViewSet
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.viewsets import ModelViewSet
 
 from app.models import Client, Contract, Event
 from app.serializers import ClientListSerializer, ClientDetailSerializer, ContractListSerializer, \
@@ -31,6 +32,8 @@ class ClientViewSet(ModelViewSet, MultipleSerializerMixin):
     serializer_class = ClientListSerializer
     detail_serializer_class = ClientDetailSerializer
     permission_classes = [IsAuthenticated, ClientPermission]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['last_name', 'email']
 
     def get_queryset(self):
         if self.request.user.team == User.Team.SUPPORT:
@@ -51,6 +54,8 @@ class ContractViewSet(ModelViewSet, MultipleSerializerMixin):
     serializer_class = ContractListSerializer
     detail_serializer_class = ContractDetailSerializer
     permission_classes = [IsAuthenticated, ContractPermission]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['client__last_name', 'client__email', 'date_created', 'amount']
 
     def get_queryset(self):
         if self.request.user.team == User.Team.SUPPORT:
@@ -70,6 +75,8 @@ class EventViewSet(ModelViewSet, MultipleSerializerMixin):
     serializer_class = EventListSerializer
     detail_serializer_class = EventDetailSerializer
     permission_classes = [IsAuthenticated, EventPermission]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['contract__client__last_name', 'contract__client__email', 'event_date']
 
     def get_queryset(self):
         if self.request.user.team == User.Team.SUPPORT:
