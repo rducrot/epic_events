@@ -9,7 +9,7 @@ L'API d'Epic Events est un CRM permettant de gérer les clients d'une entreprise
 
 ## Documentation API
 
-La documentation est disponible sur [Postman].
+La documentation est disponible sur [Postman](https://documenter.getpostman.com/view/15224502/2s93eR5wNT).
 
 ## Installation
 
