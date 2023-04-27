@@ -64,6 +64,9 @@ class ContractViewSet(ModelViewSet, MultipleSerializerMixin):
             return Contract.objects.filter(sales_contact=self.request.user)
         return Contract.objects.all()
 
+    def perform_create(self, serializer):
+        serializer.save(sales_contact=self.request.user)
+        
 
 class EventViewSet(ModelViewSet, MultipleSerializerMixin):
     """

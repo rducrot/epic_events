@@ -8,7 +8,7 @@ class ClientListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Client
-        fields = ['first_name', 'last_name', 'email', 'company_name']
+        fields = ['id', 'first_name', 'last_name', 'email', 'company_name']
 
 
 class ClientDetailSerializer(serializers.ModelSerializer):
@@ -30,7 +30,7 @@ class ContractListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Contract
-        fields = ['id', 'contract_status', 'amount', 'payment_due']
+        fields = ['id', 'contract_status', 'amount', 'payment_due', 'client']
 
 class ContractDetailSerializer(serializers.ModelSerializer):
 
@@ -57,7 +57,7 @@ class EventListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Event
-        fields = ['id', 'event_status', 'attendee', 'event_date', 'notes']
+        fields = ['id', 'event_status', 'attendee', 'event_date', 'notes', 'contract']
 
 
 class EventDetailSerializer(serializers.ModelSerializer):
