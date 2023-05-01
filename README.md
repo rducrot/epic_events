@@ -9,7 +9,7 @@ L'API d'Epic Events est un CRM permettant de gérer les clients d'une entreprise
 
 ## Documentation API
 
-La documentation est disponible sur [Postman](https://documenter.getpostman.com/view/15224502/2s93eR5wNT).
+La documentation des points de terminaison de l'API est disponible sur [Postman](https://documenter.getpostman.com/view/15224502/2s93eR5wNT).
 
 ## Installation
 
@@ -59,6 +59,15 @@ CREATE USER epicadmin WITH ENCRYPTED PASSWORD 'D!j4c39H';
 GRANT ALL PRIVILEGES ON DATABASE epic_events TO epicadmin;
 ```
 
+Une base de données est disponible afin de tester l'application. La commande suivante permet d'importer les données dans la base :
+
+```bash
+sudo -u postgres psql epic_events < database.db
+```
+
+Les identifiants des utilisateurs sont disponibles dans la partie `authentication` de la documentation sur [Postman](https://documenter.getpostman.com/view/15224502/2s93eR5wNT).
+
+Si vous souhaitez créer vous-même le super utilisateur avec la commande `python3 manage.py createsuperuser`, renseigner le champ `Team: Management`afin d'accéder à la console d'administration.
 ## Exécution
 
 Lancer la commande depuis le répertoire de l'application :
