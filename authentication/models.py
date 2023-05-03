@@ -24,10 +24,10 @@ class User(AbstractUser):
         if self.team == self.Team.MANAGEMENT:
             self.is_staff = True
             self.is_superuser = True
-        else :
+        else:
             self.is_staff = False
             self.is_superuser = False
-        
+
         user = super(User, self)
         user.save()
         return user

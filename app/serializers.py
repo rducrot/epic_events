@@ -19,7 +19,7 @@ class ClientDetailSerializer(serializers.ModelSerializer):
         model = models.Client
         fields = '__all__'
         read_only_fields = ['id', 'date_created', 'date_updated', 'sales_contact']
-    
+
     def get_sales_contact(self, instance):
         queryset = instance.sales_contact
         serializer = UserSerializer(queryset, read_only=True)
@@ -31,6 +31,7 @@ class ContractListSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Contract
         fields = ['id', 'contract_status', 'amount', 'payment_due', 'client']
+
 
 class ContractDetailSerializer(serializers.ModelSerializer):
 
@@ -46,7 +47,7 @@ class ContractDetailSerializer(serializers.ModelSerializer):
         queryset = instance.sales_contact
         serializer = UserSerializer(queryset, read_only=True)
         return serializer.data
-    
+
     def get_client(self, instance):
         queryset = instance.client
         serializer = ClientListSerializer(queryset, read_only=True)
@@ -63,13 +64,19 @@ class EventListSerializer(serializers.ModelSerializer):
 class EventDetailSerializer(serializers.ModelSerializer):
 
     support_contact = serializers.SerializerMethodField()
+    contract = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Event
         fields = '__all__'
         read_only_fields = ['id', 'date_created', 'date_updated', 'support_contact']
-    
+
     def get_support_contact(self, instance):
         queryset = instance.support_contact
         serializer = UserSerializer(queryset, read_only=True)
+        return serializer.data
+
+    def get_contract(self, instance):
+        queryset = instance.contract
+        serializer = ContractDetailSerializer(queryset, read_only=True)
         return serializer.data

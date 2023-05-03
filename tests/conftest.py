@@ -7,6 +7,7 @@ import pytz
 from app import models
 from authentication.models import User
 
+
 @pytest.fixture
 def client():
     c = Client()
@@ -35,6 +36,7 @@ def contract_fixture():
         'payment_due': datetime(2023, 6, 15, 0, 0, 0, tzinfo=pytz.UTC),
     }
     return data
+
 
 @pytest.fixture
 def contract_unsigned_fixture(contract_fixture):

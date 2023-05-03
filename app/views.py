@@ -42,7 +42,7 @@ class ClientViewSet(ModelViewSet, MultipleSerializerMixin):
             return Client.objects.filter(
                 Q(sales_contact=self.request.user) | Q(client_status=Client.ClientStatus.POTENTIAL))
         return Client.objects.all()
-    
+
 
 class ContractViewSet(ModelViewSet, MultipleSerializerMixin):
     """
@@ -66,7 +66,7 @@ class ContractViewSet(ModelViewSet, MultipleSerializerMixin):
 
     def perform_create(self, serializer):
         serializer.save(sales_contact=self.request.user)
-        
+
 
 class EventViewSet(ModelViewSet, MultipleSerializerMixin):
     """
